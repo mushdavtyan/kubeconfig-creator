@@ -11,7 +11,14 @@ KUBECONF="/etc/kubernetes/admin.conf"
 
 ######################## Describing functions ###############################
 
-CLUSTER_NAME=`hostname | sed -e 's/k8s//'| sed -e 's/kube//' | sed -e 's/worker//' | sed -e 's/node//' | sed -e 's/master//' | sed -e 's/-//' | sed -e 's/-//'`
+
+
+if [ ! -z "$1" ]
+then
+    CLUSTER_NAME=$1
+else
+    CLUSTER_NAME=`hostname | sed -e 's/k8s//'| sed -e 's/kube//' | sed -e 's/worker//' | sed -e 's/node//' | sed -e 's/master//' | sed -e 's/-//' | sed -e 's/-//'`
+fi
 CLUSTER_CA_DATA=$(cat $KUBECONF | grep certificate-authority-data: | awk '{print $2}')
 CLUSTER_SERVER=`cat /etc/kubernetes/kubelet.conf | grep server | awk '{print $2}'`
 
@@ -133,6 +140,7 @@ do
     Create_RBAC_Clusterrolebinding "${USER}" "${CLUSTERROLE}"
     Get_Token "${USER}" 
     Generate_Kubeconfig "${USER}"
+
 
     if Check_kubeconfig "${USER}" "${CLUSTERROLE}"
     then
