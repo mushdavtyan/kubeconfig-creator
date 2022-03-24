@@ -12,7 +12,6 @@ KUBECONF="/etc/kubernetes/admin.conf"
 ######################## Describing functions ###############################
 
 
-
 if [ ! -z "$1" ]
 then
     CLUSTER_NAME=$1
