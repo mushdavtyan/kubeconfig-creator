@@ -4,21 +4,17 @@
 
 declare -a user_permissions=("user-admin:cluster-admin" "user-read:view")
 
+read -e -p "Edit Cluster Name or just leave as " -i "`hostname | sed -e 's/k8s//'| sed -e 's/kube//' | sed -e 's/worker//' | sed -e 's/node//' | sed -e 's/master//' | sed -e 's/-//' | sed -e 's/-//'`" CLUSTER_NAME
+read -e -p "edit custom kubeconfig path or just press enter leaving it as " -i "/etc/kubernetes/admin.conf" KUBECONF
 TARGET_FOLDER="/opt/kubeconfigs"
 NAMESPACE="kube-system"
-KUBECONF="/etc/kubernetes/admin.conf"
+
 
 ######################## Describing functions ###############################
 
 
-if [ ! -z "$1" ]
-then
-    CLUSTER_NAME=$1
-else
-    CLUSTER_NAME=`hostname | sed -e 's/k8s//'| sed -e 's/kube//' | sed -e 's/worker//' | sed -e 's/node//' | sed -e 's/master//' | sed -e 's/-//' | sed -e 's/-//'`
-fi
 CLUSTER_CA_DATA=$(cat $KUBECONF | grep certificate-authority-data: | awk '{print $2}')
-CLUSTER_SERVER=`cat /etc/kubernetes/kubelet.conf | grep server | awk '{print $2}'`
+CLUSTER_SERVER=`cat $KUBECONF | grep server | awk '{print $2}'`
 
 ld=$(tput bold)
 underline=$(tput sgr 0 1)
