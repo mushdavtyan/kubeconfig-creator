@@ -2,7 +2,6 @@
 
 #This script will generate 1 read and 1 full permission kubeconfigs for correspondig users synisys-read and synisys-admin
 
-
 declare -a user_permissions=("user-admin:cluster-admin" "user-read:view")
 
 TARGET_FOLDER="/opt/kubeconfigs"
